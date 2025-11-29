@@ -1,0 +1,62 @@
+Algorithms and Applications in Social Networks 
+ HW #1 
+ 
+Instructions: Implementation should be done using Python and NetworkX library. Please 
+submit your code in .py files (file per question) or .ipynb file (Jupyter Notebooks).  
+The theoretical part of the question should be submitted in a PDF file.  
+Do not forget to write IDs of all members in the team (pair). Submit only once per team! 
+Please ZIP all files together, name the file HW1_<student_id>.zip and upload it to Moodle. 
+ 
+ 
+Question #1: 
+a. Implement the Watts–Strogatz model. Write a function that gets n, k and p 
+returns a random graph according to the model. 
+b. Implement a function that computes the clustering coefficient of a given graph.  
+ 
+ 
+Question #2: 
+a. Implement the Degree, Betweenness and Closeness centrality measures. 
+b. Run these measures on a random Gnp network with n=22 and p=0.3 and 
+report top-3 nodes according to each of the measures. 
+c. Visualize this network using different centrality measures by changing node 
+sizes based on the centrality measure value of each node. 
+d. Compute (manually) each of the centrality measures for red, green, blue and 
+grey nodes. 
+ 
+e. Compute (manually) each of the centrality measures for the following graph: 
+ 
+Find the nodes that are symmetric (you can do it before the computation). 
+
+ 
+ 
+Question #3: 
+a. Implement check_balance(G) function that checks balance (according to 
+"Theory of Structural Balance") of a G. Explain your implementation decision. 
+b. Think about a real-world example of a signed social network (up to 10 nodes) 
+that is balanced according to the "Theory of Structural Balance". Present the 
+network, explain the nodes and the edges. Show (by splitting it into two 
+coalitions of by completing it) that the graph is balanced. 
+c. Visualize the network from (b) using different colors for positive and negative 
+edges. Run the algorithm implemented in (a) to demonstrate that the network 
+is balanced. 
+d. Find a number N>3 (one example is enough) for which a complete graph with 
+N nodes is balanced and has three times more "+" edges than "-" edges. 
+e. Find a number N>3 (one example is enough) for which a complete graph with 
+N nodes is balanced and has three times more "-" edges than "+" edges. 
+ 
+ 
+Question #4: 
+There is a random graph generated using the Erdős–Rényi model, with parameters 
+N = 20 and p = 0.5. What is the expected number of triangles in this graph? 
+ 
+ 
+Question #5: 
+A group of n people are connected to each other, and using 2 ways of 
+communications – phone and mail. Prove that they can decide to use only one of 
+these two ways and still all of them will be reachable to each other (not necessarily 
+directly connected). 
+ 
+ 
+Question #6: 
+There is a group of 6 people (some of them know each other). Prove that we can 
+take three of them such that all of them know each other or do not know each other.

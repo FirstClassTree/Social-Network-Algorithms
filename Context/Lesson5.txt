@@ -1,0 +1,292 @@
+Algorithms and Applications in 
+Social Networks
+2025/2026, Semester A
+Slava Novgorodov
+1
+
+Lesson #5
+•Newman-Girvan betweenness computation
+•Overlapping communities
+•Communities detection algorithms
+•More methods for community detection
+
+2
+
+Newman-Girvan: Betweenness
+3
+
+Newman-Girvan algorithm
+4
+
+Edge Betweeness
+•Number of shortest paths going via edge e
+5
+
+Step-by-step
+6
+
+Karate club example
+7
+
+Karate club example
+8
+
+How to compute betweenness?
+•Naïve approach: find all shortest paths and 
+compute brute-force
+•Better approach: BFS based algorithm
+
+•Example:
+9
+
+Betweenness computation
+
+Run BFS from every node
+Start from A
+10
+
+Betweenness computation
+
+Symmetric case for:
+1) A, B, E, F
+2) C, D
+11
+
+Betweenness computation
+12
+BFS starting from node A:
+
+Betweenness computation
+13
+BFS starting from node A:
+1
+1
+1
+1
+1
+Weights of the nodes – top down, based on
+Numbers and weights of parents
+
+Betweenness computation
+14
+BFS starting from node A:
+1
+1
+1
+1
+1
+1
+1
+1
+3
+4
+Weights of the edges – bottom up:
+Weighted split of the weight between parents + 1
+
+Betweenness computation
+15
+BFS starting from node C:
+
+Betweenness computation
+16
+BFS starting from node C:
+Weights of the nodes – top down, based on
+Numbers and weights of parents
+1
+11
+1
+1
+
+Betweenness computation
+17
+BFS starting from node C:
+1
+11
+1
+1
+Weights of the edges – bottom up:
+Weighted split of the weight between parents + 1
+1
+1
+1
+3
+1
+
+Betweenness computation
+Edge betweenness – sum (/2) of edge weights on all BFS graphs
+EB(A, B) = (1+1)/2 = 1
+EB(A, C) = (4+1+1+1+1)/2 = 4
+EB(C, D) = (3+3+3+3+3+3)/2 = 9
+
+18
+1
+4
+1
+4
+9
+4
+4
+
+Overlapping communities
+19
+
+Overlapping Communities
+In opposite to non-overlapping community detection algorithms, 
+where each node gets a unique label (and belongs to one 
+community), nodes may belong to several communities
+20
+
+Communities
+(a)Non-overlapping communities
+(b)Overlapping (on "d" node) communities
+21
+
+Communities
+Idea: duplicate nodes, and use Newman-Girvan
+Which nodes to duplicate?
+22
+
+CONGO Algorithm
+Сluster-Overlap Newman Girvan Optimized algorithm
+Similar to Edge Betweenness – Split Betweenness
+23
+
+CONGO Algorithm
+1.Compute Edge Betweenness for each edge and split 
+betweenness for each node
+2.Find node/edge with maximum betweenness
+3.Remove the edge / Split the node
+4.Recalculate 1
+5.Repeat until no edges left
+24
+
+CONGO Algorithm
+Pros:
+-Similar to NG algorithm for non-overlap communities
+
+Cons:
+-Expensive computation
+
+25
+
+Overlapping Communities
+26
+
+k-clique community
+Definitions:
+1. k-clique is a clique of k nodes
+2. Adjacent k-cliques: if they share k-1 nodes
+3. k-clique community – k-cliques that can be reached 
+from each other via series of adjacent k-cliques
+27
+
+k-clique community
+28
+
+k-clique community
+29
+
+k-clique community
+30
+
+k-clique percolation method
+By Palla et al. 2005:
+•Find all maximal cliques
+•Create clique overlap matrix
+•Threshold matrix with k-1
+•Communities are connected components
+31
+
+Cliques and maximal cliques
+5-clique
+How many 4-cliques?
+What can we say about
+ them?
+32
+
+Cliques and maximal cliques
+5-clique
+How many 4-cliques?
+What can we say about
+ them?
+
+All 4-cliques are adjacent!
+33
+
+Example
+34
+
+Example
+35
+
+Example
+36
+
+Example
+37
+
+More examples
+38
+
+Phone call network
+39
+
+More methods
+40
+
+Label propagation
+•Initialize labels on all nodes 
+•Randomized node order 
+•For every node replace its label with occurring with the 
+highest frequency among neighbors (ties are broken uniformly 
+randomly). 
+•If every node has a label that the maximum number of their 
+neighbors have, then stop the algorithm
+41
+
+Example
+42
+
+Example
+43
+Start from a random node see if it changes it's label...
+
+Example
+44
+B
+C --> B
+
+Example
+45
+B
+B
+A --> B
+
+Example
+46
+B
+B
+D
+E --> D
+
+Example
+47
+B
+B
+D
+D
+F --> D
+
+Example
+48
+B
+B
+D
+D
+
+Airports and flights example
+49
+
+Thank you!
+Questions?
+50

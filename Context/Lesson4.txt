@@ -1,0 +1,305 @@
+Algorithms and Applications in 
+Social Networks
+2025/2026, Semester A
+Slava Novgorodov
+1
+
+Lesson #4
+•Similarity in networks
+•Network structure
+•Communities
+•Detection of communities
+
+2
+
+Similarity in Networks
+3
+
+Properties of Network
+•Global (per network):
+–Average clustering coefficient
+–Degree distribution
+–Diameter
+–...
+•Local (per node):
+–Degree
+–Node centrality
+–...
+•Pairwise:
+–Similarity
+–...
+4
+
+Similarity
+•Jaccard Similarity:        [N (v) = Neighbors(v)]
+
+J(2, 4) = |{3, 5, 6} ∩ {1, 3, 5}| /
+|{3, 5, 6}  ∪ {1, 3, 5}| = 2/4 = 0.5
+
+5
+
+Similarity
+•Cosine Similarity:
+
+cos(a,b) = (a * b) / (|a|*|b|)
+
+(2) = (1, 0, 1, 0, 1, 0)
+(4) = (0, 0, 1, 0, 1, 1)
+
+cos((2), (4)) = 2 / 3
+6
+
+Similarity
+7
+
+Network Structure
+8
+
+Network Structure
+9
+
+Graph cliques
+•Clique is a complete subgraph.
+•Cliques can overlap
+10
+
+Graph cliques
+•Maximal clique – a clique that cannot be extended 
+by adding more nodes
+•Maximum clique – a clique of a maximum size
+11
+
+Graph cliques
+•Maximal clique – a clique that cannot be extended 
+by adding more nodes
+•Maximum clique – a clique of a maximum size
+12
+
+Graph cliques
+Maximal cliques:
+Size:2345
+#:112122
+13
+
+Graph cliques
+Computation of cliques:
+•Finding a clique of size k: O(n
+k
+ k
+2
+)
+•Finding maximum clique: O(3
+n/3
+)
+•Easier in sparse graphs...
+
+14
+
+Graph Core
+•A k-core is the largest subgraph S such as each node is 
+connected to at least k nodes in S
+
+•Every node in k-core has degree >= k
+•(k+1)-core is always a subgraph of k-core
+•Core number of node is the highest "k" of the k-core that 
+contains this node
+15
+
+16
+Graph Core - Example
+
+17
+
+k-core decomposition
+Input:  Graph G(V, E)
+Output: core[v] – core number for each node
+
+1: Store degree of v in degree[v]
+2: Sort V by degree[v] (ascending)
+3: For each v in V:
+4:core[v] = degree[v]
+5:For each u in neighbors(v):
+6:If degree[u] > degree[v]:
+7:degree[u] -= 1
+8:Sort V by degree[v]
+
+18
+
+k-core decomposition
+Recursively delete all nodes with degree less then k, 
+the remaining graph is k-core
+19
+
+k-core decomposition
+Zachary karate club k-core decomposition:
+Red – 1
+Yellow – 2
+Green – 3
+Blue – 4
+
+20
+
+Network Communities
+21
+
+Community
+Network Communities are group of vertices such that vertices inside the 
+group connected with many more edges than between groups
+22
+
+Community Types
+Communities can be either:
+•Non-Overlapping
+–Country of residence
+–Working place
+–Favorite football club
+•Overlapping
+–Types of friends (friends from school, army, work)
+–Groups of interest
+23
+
+Example – Soccer teams
+24
+
+Example – Non-overlapping
+25
+
+Example – Non-overlapping
+26
+
+Example – Overlapping
+27
+
+Example
+28
+
+Example
+29
+
+What makes community?
+•Mutuality of edges. 
+–Almost everyone in the group has edge to one another 
+•Compactness. 
+–Closeness or reachability of group members in small 
+number of steps, not necessarily adjacency 
+•Density of edges. 
+–High frequency of edges within the group 
+•Separation. 
+–Higher frequency of ties among group members 
+compared to non-members
+30
+
+Community density
+•Network density:
+
+•Inter-community density:
+
+•External edges density:  
+
+Community has: 
+
+n
+s
+ – nodes in S , m
+s
+ – edges in S,  m
+ext
+ – edges from S outside
+
+31
+
+Modularity
+Modularity:
+
+                   -  Kronecker Delta
+
+Higher modularity score – better community
+Single community – Q = 0
+
+32
+
+Detection of Communities
+33
+
+Similarity Based Clustering
+•Define similarity between every two nodes:
+–Jaccard
+–Cosine
+–...
+•Build similarity matrix (compute all-pairs 
+similarity)
+•Group together nodes with high similarity
+34
+
+Agglomerative clustering
+•Assign each vertex to a group of its own 
+•Find two groups with the highest similarity and join them in a 
+single group 
+•Calculate similarity between groups: 
+–single-linkage clustering (most similar in the group) 
+–complete-linkage clustering (least similar in the group) 
+–average-linkage clustering (mean similarity between groups) 
+•Repeat until all joined into single group
+35
+
+Similarity
+36
+
+Karate club example
+37
+
+Karate club example
+38
+
+Karate club example
+39
+
+Karate club example
+40
+
+Karate club example
+41
+
+Graph Partitioning
+Combinatorial problem:
+•Number of ways to divide n nodes into n1, n2 
+nodes (n1+n2 = n), bi-partitioning
+
+# of combinations = n! / (n1! * n2!) 
+42
+
+Community Detection
+•Setup: 
+–Undirected sparse graph (m << n^2)
+–Non-overlapping communities
+–Each community should be connected
+–Exact solution NP-hard, hence we are using 
+heuristics / approximate algorithms
+
+43
+
+Edge Betweenness
+•Number of shortest paths going via edge e
+44
+
+Newman-Girvan algorithm
+45
+
+Step-by-step
+46
+
+Karate club example
+47
+
+Karate club example
+48
+
+Overlapping Communities
+•Next lesson we will extend the community 
+detection task to find overlapping 
+communities 
+49
+
+Thank you!
+Questions?
+50

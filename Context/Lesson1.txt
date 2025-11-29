@@ -1,0 +1,495 @@
+Algorithms and Applications in 
+Social Networks
+2025/2026, Semester A
+Slava Novgorodov
+1
+
+Lesson #1
+•Administrative questions
+•Course overview
+•Introduction to Social Networks
+•Basic definitions
+•Network properties
+
+2
+
+Administrative questions
+•Course format: 
+–Lecture (2h) + Recitation (1h) every week (by Slava)
+–3 Homework tasks during the semester
+•Submission in pairs
+•Theoretical + Practical (Python) questions
+–Final exam (format will be discussed later)
+–Final grade = 85% Exam + 15% HW
+
+–Office hours – Sunday (schedule in advance)
+–Course website: 
+https://slavanov.com/teaching/sn2526a/
+–Email: slavanov@post.tau.ac.il (not mail.tau.ac.il !) 
+
+3
+
+Related material
+•Books:
+–Newman "Networks: An Introduction"
+–Jackson "Social and Economic Networks"
+–Easley & Kleinberg "Networks, Crowds, and Markets: Reasoning About a 
+Highly Connected World" 
+http://cs.cornell.edu/home/kleinber/networks-book/ 
+–Wasserman & Faust "Social Network Analysis. Methods and Applications."
+•Related courses:
+–CS224W (Stanford) – Analysis of Networks
+https://web.stanford.edu/class/cs224w/
+–Social and Economics networks (online course)
+https://www.youtube.com/channel/UCCnG8fKY45aH73ahmGK2xcg
+–High School of Economics – Social Networks
+http://leonidzhukov.net/hse/2014/socialnetworks/
+
+4
+
+Social Networks
+•Social Network - a structure of social actors 
+(individuals or organizations) and social 
+interactions between the actors
+
+5
+
+Social Networks
+6
+
+Social Networks
+Social actors
+7
+
+Social Networks
+Social actors and interactions
+8
+
+Social Networks
+•Interdisciplinary field, studied in:
+–Sociology
+–Social psychology
+–Economics
+–Statistics
+–Mathematics (Graph Theory)
+–Computer Science (this course)
+9
+
+Social Networks
+•The research around Social Networks started 
+at the beginning of 1930s  (first sociograms)
+
+•Mathematical formulation – 1950s
+•1980s and later – growth in number of social 
+network research and researchers  
+•Late 1990s until now – online social networks
+10
+
+11
+
+Research clusters
+•Communications
+•Complex networks
+•Criminal networks
+•Spread of innovations
+•Demography
+•Health care
+•Language and linguistics
+•Social media
+•...
+12
+
+What can be presented as SN?
+•Friendship and other social relationships
+•Corporative structures (internal/external)
+•Trade relationships (individuals/companies)
+•Political alliances
+•Sharing of information
+•Criminal organizations structures
+•...
+
+13
+
+Three aspects
+•Theory
+–Network formation, dynamics...
+–Influence detection
+–Communities
+•Experimental studies
+–Observe patterns
+–Test theories
+•Methodology
+–How to analyze networks?
+14
+
+Applications in Social Networks
+15
+
+6 degrees of separation
+16
+
+6 degrees of separation
+The Small World experiment:
+Model the population as a social network and attempt to find the 
+average path length between any two nodes.
+1.Select individuals in two far (socially and geographically) points 
+– Omaha, Nebraska and Boston, Massachusetts
+2.The individual in Omaha received a letter he/she needs to pass 
+to an individual in Boston. If they know each other, great. 
+Otherwise, the letter should be sent to a friend who may know 
+the destination individual.
+Results: 64 letters reached the target within 5.5 hops on average
+Facebook case: Around 4 degrees of separation (https://arxiv.org/abs/1111.4570)
+17
+
+Community detection
+18
+
+Community detection
+19
+
+Influence Maximization
+Find K individuals in the 
+social network that
+maximize the influence
+20
+
+Link prediction
+•"Suggested friends" feature
+21
+
+Product adoption
+22
+
+Product adoption
+60% to 90% of LinkedIn users registered from friends invitation
+(Anderson, Huttenlocher, Kleinberg, Leskovec, Tiwari, WWW'15)
+23
+
+Misinformation detection
+Analyzing the content of the information and also the 
+source and pattern of spread 
+24
+
+Fake accounts detection
+Detecting fake accounts using behavioral analysis
+25
+
+And more...
+•Fraud financial activities
+•Spread of diseases 
+•Employee and companies success
+•...
+26
+
+Summary
+In this course we are going to focus on:
+•Practical study of the data to find principles
+•Mathematical models of the networks
+–Small-world model, structural balance, 
+•Algorithms (analyzing the network)
+–Communities detection, link prediction, influence 
+maximization...
+•Applications
+27
+
+Structure of the Network
+28
+
+Components of the Network
+
+•Vertices, Nodes – objects/individuals[V]
+•Edges, Links – interactions/relations[E]
+•Graph, Network – the system [G(V, E)]
+
+29
+
+Modeling as Social Network
+•Identify the domain:
+–Which problem you are trying to solve?
+–What are the nodes of the network?
+–What are the links of the network?
+
+•.
+30
+
+Directed/Undirected Graphs
+Undirected graph:
+•Undirected, symmetrical edges
+•Examples:
+•Friends (on Facebook)
+•Classmates
+Directed graph:
+•Directed edges
+•Examples:
+•Followers (Instagram)
+•Phone calls
+
+31
+
+Node degree (Undirected)
+Node degree (k
+i
+) – number of 
+edges adjacent to the node i
+
+Example: 
+k
+5
+= 2, k
+3
+= 3 
+
+Average degree: 
+<k> = 1/|V| * (k
+1 
++ ... + k
+|V|
+) = 2|E|/|V|
+
+32
+
+Node degree (Directed)
+In-degree (k
+i
+in
+) – number of 
+edges that goes to the node
+Out-degree (k
+i
+out
+) – number of 
+edges that goes from the node
+Total degree is a sum of in and out degrees. 
+
+Example: 
+k
+5
+in
+= 2, k
+5
+out
+= 0, k
+5
+= 2+0=2 k
+1
+in
+= 0, k
+1
+out
+= 1, k
+1
+= 1
+
+Avg. degree: <k> = |E| / |V| , <k
+out 
+> = <k
+in 
+>
+
+33
+
+Complete Graph
+The maximum number of
+edges in a graph of N nodes is 
+N*(N-1)/2
+
+Undirected graph with maximum
+number of edges called complete 
+
+•clique is a complete subgraph
+•triangle is a complete graph of size 3
+
+34
+
+Representing networks:
+Adjacency matrix
+•A
+ij
+ = 1 , if there is an edge (i, j)
+•A
+ij
+ = 0 , otherwise
+
+35
+
+Representing networks:
+Edge list
+
+•(1, 2)
+•(2, 3)
+•(2, 4)
+•(2, 5)
+•(4, 5)
+•(4, 6)
+•(6, 3)
+
+36
+
+Representing networks:
+Adjacency list
+Easier for large and sparse graphs
+
+•1: 2
+•2: 3, 4, 5
+•3:
+•4: 5, 6
+•5:
+•6: 3
+
+37
+
+Social Networks are sparse
+Most of the real world social networks are sparse
+
+|E|  <<  |E
+max
+| or <k>   <<  |V| - 1
+
+For example, in the LinkedIn social network:
+|V| ≈ 7,000,000<k> ≈ 8.87
+
+          (Source: Leskovec et al., Internet Mathematics, 2009)
+38
+
+Edge attributes
+•Weight (# messages, frequency of interaction)
+•Ranking (most favorite actor, second favorite..)
+•Type (friend, colleague, coauthor)
+•Sign (positive/negative relationships)
+•Properties depending on the other graph 
+(number of common friends)
+39
+
+Connectivity of Undirected graphs
+•Connected graph - any two nodes can be joined by a 
+path (sequence of edges)
+•Disconnected graph made out of 2 or more connected 
+components
+
+•Bridge edge – if we remove it, the graph becomes disconnected
+•Articulation node - if we remove it, the graph becomes 
+disconnected
+40
+
+Connectivity of Directed graphs
+•Strongly connected directed graph – has a 
+node from each node to each other node and 
+vice-versa
+
+•Weakly connected directed graph – 
+connected if we ignore the edge directions
+
+41
+
+Quiz
+For each of the examples, answer if the graph is 
+directed/undirected and if edges are weighted or not
+
+•Classmates – 
+•Facebook friends – 
+•Mobile phone calls – 
+•Twitter followers – 
+•Likes of Facebook – 
+
+42
+
+Quiz
+For each of the examples, answer if the graph is 
+directed/undirected and if edges are weighted or not
+
+•Classmates – undirected, weighted
+•Facebook friends – undirected, non-weighted
+•Mobile phone calls – directed, weighted
+•Twitter followers – directed, non-weighted
+•Likes of Facebook – directed, weighted
+
+43
+
+Network Properties
+44
+
+Key Network Properties
+
+•Degree distributionP(k)
+•Path lengthh
+•Clustering coefficient C
+45
+
+Degree distribution
+•P(k) – probability that a randomly chosen 
+node has a degree k
+
+Given a graph with N nodes:
+•P(k) = N
+k
+ / N (N
+k
+ = # of nodes with degree k)
+
+•Example of such distribution 
+(LiveJournal)
+46
+
+Path length
+•Path - sequence of edges which connect a 
+sequence of vertices which are all distinct
+
+•Distance – the number of edges along the 
+shortest path connecting two nodes
+
+•Diameter – the maximal shortest path 
+between two nodes in graph
+
+47
+
+Clustering coefficient
+•Clustering coefficient of a node – fraction of 
+the neighbors that are connected
+•Node i, with degree k
+i
+
+•C
+i 
+= 2 * (# of edges between the neighbors)/ k
+i 
+*(k
+i
+ – 1)
+•Intuitively: # of closed triangles / # of all triangles
+
+AC
+B
+D
+AC
+B
+D
+AC
+B
+D
+C
+A
+ = 0C
+A
+ = 1/3
+C
+A
+ = 2/3
+AC
+B
+D
+C
+A
+ = 1
+48
+
+Clustering coefficient
+•Clustering coefficient of a node – fraction of 
+the neighbors that are connected
+
+•Average clustering coefficient:
+49
+
+Thank you!
+Questions?
+50
