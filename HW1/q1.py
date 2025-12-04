@@ -20,11 +20,6 @@ def watts_strogatz_model(n, k, p):
     G : networkx.Graph
         Watts-Strogatz small-world graph
     
-    Raises:
-    -------
-    ValueError
-        If k is odd, k >= n, or p is not in [0, 1]
-    
     Examples:
     ---------
     >>> G = watts_strogatz_model(20, 4, 0.3)
@@ -35,82 +30,114 @@ def watts_strogatz_model(n, k, p):
         raise ValueError("k must be even")
     if k >= n:
         raise ValueError("k must be less than n")
-    if not 0 <= p <= 1:
+    if not (0 <= p <= 1):
         raise ValueError("p must be between 0 and 1")
     
     # Step 1: Create ring lattice
     G = nx.Graph()
-    nodes = list(range(n))
-    G.add_nodes_from(nodes)
     
-    # Connect each node to k/2 neighbors on the right
+    # Add all nodes
+    for i in range(n):
+        G.add_node(i)
+    
+    # Connect each node to k/2 neighbors on left and right
     for i in range(n):
         for j in range(1, k // 2 + 1):
-            target = (i + j) % n
-            G.add_edge(i, target)
+            right_neighbor = (i + j) % n
+            left_neighbor = (i - j) % n
+            G.add_edge(i, right_neighbor)
+            G.add_edge(i, left_neighbor)
     
-    # Step 2: Rewire edges with probability p
-    # Only consider edges where i < j to avoid processing each edge twice
-    edges_to_process = [(i, j) for i, j in G.edges() if i < j]
+    # Step 2: Recreate edges with probability p
+    edges = list(G.edges())
     
-    for i, j in edges_to_process:
-        if random.random() < p:
-            # Find valid targets (not i, not already connected to i)
-            valid_targets = [node for node in nodes 
-                           if node != i and not G.has_edge(i, node)]
+    for edge in edges:
+        i = edge[0]
+        j = edge[1]
+        
+        # Skip if we already processed this edge from the other direction
+        if i > j:
+            continue
             
-            # Only rewire if there are valid targets
-            if valid_targets:
-                new_target = random.choice(valid_targets)
+        # Rewire with probability p
+        if random.random() < p:
+            # Find all possible new targets
+            possible_targets = []
+            for node in range(n):
+                # Can't connect to itself
+                if node == i:
+                    continue
+                # Can't connect if already connected
+                if G.has_edge(i, node):
+                    continue
+                possible_targets.append(node)
+            
+            # Only recreate if we have valid targets
+            if len(possible_targets) > 0:
+                new_target = random.choice(possible_targets)
                 G.remove_edge(i, j)
                 G.add_edge(i, new_target)
     
     return G
 
-
-# Test the implementation
-if __name__ == "__main__":
-    print("Testing Watts-Strogatz Model Implementation")
-    print("=" * 50)
+def compute_clustering_coefficient(G):
+    """
+    Compute the clustering coefficient of a given graph.
     
-    # Test 1: Regular ring lattice (p=0)
-    print("\nTest 1: Regular ring lattice (p=0)")
-    G1 = watts_strogatz_model(10, 4, 0)
-    print(f"Nodes: {G1.number_of_nodes()}, Edges: {G1.number_of_edges()}")
-    print(f"Expected edges: {10 * 4 // 2} (n * k / 2)")
-    degrees1 = [d for _, d in G1.degree()]
-    print(f"All degrees equal to k? {all(d == 4 for d in degrees1)}")
+    The clustering coefficient of a node i with degree k_i is:
+    C_i = 2 * (# of edges between neighbors) / (k_i * (k_i - 1))
     
-    # Test 2: Small-world network (p=0.3)
-    print("\nTest 2: Small-world network (p=0.3)")
-    G2 = watts_strogatz_model(20, 6, 0.3)
-    print(f"Nodes: {G2.number_of_nodes()}, Edges: {G2.number_of_edges()}")
-    degrees2 = [d for _, d in G2.degree()]
-    print(f"Degree range: min={min(degrees2)}, max={max(degrees2)}, avg={sum(degrees2)/len(degrees2):.2f}")
+    The average clustering coefficient is the mean of all node clustering coefficients.
     
-    # Test 3: Fully rewired (p=1.0)
-    print("\nTest 3: Fully rewired network (p=1.0)")
-    G3 = watts_strogatz_model(20, 4, 1.0)
-    print(f"Nodes: {G3.number_of_nodes()}, Edges: {G3.number_of_edges()}")
-    degrees3 = [d for _, d in G3.degree()]
-    print(f"Degree range: min={min(degrees3)}, max={max(degrees3)}, avg={sum(degrees3)/len(degrees3):.2f}")
+    Parameters:
+    -----------
+    G : networkx.Graph
+        Input graph
     
-    # Test 4: Error handling
-    print("\nTest 4: Input validation")
-    try:
-        G4 = watts_strogatz_model(10, 5, 0.3)  # k must be even
-    except ValueError as e:
-        print(f"✓ Caught expected error: {e}")
+    Returns:
+    --------
+    float
+        Average clustering coefficient of the graph
     
-    try:
-        G5 = watts_strogatz_model(10, 10, 0.3)  # k must be < n
-    except ValueError as e:
-        print(f"✓ Caught expected error: {e}")
+    Examples:
+    ---------
+    >>> G = watts_strogatz_model(20, 4, 0.3)
+    >>> cc = compute_clustering_coefficient(G)
+    >>> print(f"Clustering coefficient: {cc:.4f}")
+    """
+    clustering_coefficients = []
     
-    try:
-        G6 = watts_strogatz_model(10, 4, 1.5)  # p must be in [0, 1]
-    except ValueError as e:
-        print(f"✓ Caught expected error: {e}")
+    # Calculate clustering coefficient for each node
+    for node in G.nodes():
+        # Get all neighbors of the current node
+        neighbors = list(G.neighbors(node))
+        k = len(neighbors)
+        
+        # If node has less than 2 neighbors, clustering coefficient is 0
+        if k < 2:
+            clustering_coefficients.append(0.0)
+            continue
+        
+        # Count edges between neighbors
+        edges_between_neighbors = 0
+        for i in range(len(neighbors)):
+            for j in range(i + 1, len(neighbors)):
+                if G.has_edge(neighbors[i], neighbors[j]):
+                    edges_between_neighbors += 1
+        
+        # Calculate clustering coefficient for this node
+        # C_i = 2 * edges_between_neighbors / (k * (k - 1))
+        max_possible_edges = k * (k - 1) / 2
+        node_clustering = edges_between_neighbors / max_possible_edges
+        
+        clustering_coefficients.append(node_clustering)
     
-    print("\n" + "=" * 50)
-    print("All tests completed successfully!")
+    # Calculate and return average clustering coefficient
+    if len(clustering_coefficients) > 0:
+        total = 0.0
+        for cc in clustering_coefficients:
+            total += cc
+        avg_clustering = total / len(clustering_coefficients)
+        return avg_clustering
+    else:
+        return 0.0
