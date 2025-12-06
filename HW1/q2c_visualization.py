@@ -70,6 +70,7 @@ def compute_closeness_centrality(graph, normalized=True):
     graph (networkx.Graph): The input graph.
 
     Returns: A dictionary with nodes as keys and their closeness centrality as values.
+
     """
     node_closeness_centrality = {}
     for node in graph.nodes():
@@ -90,7 +91,7 @@ def compute_closeness_centrality(graph, normalized=True):
                 node_closeness_centrality[node] = closeness_centrality
     return node_closeness_centrality
 
-# Q2B: Erdos-Renyi graph Gnp graph with n=22 and p=0.3
+# Q2B: Create Erdos-Renyi graph and compute centrality measures
 n = 22
 p = 0.3
 G = nx.erdos_renyi_graph(n, p, seed=42)
@@ -105,37 +106,41 @@ top_3_degree = sorted(degree_centrality.items(), key=lambda x: x[1], reverse=Tru
 top_3_betweenness = sorted(betweenness_centrality.items(), key=lambda x: x[1], reverse=True)[:3]
 top_3_closeness = sorted(closeness_centrality.items(), key=lambda x: x[1], reverse=True)[:3]
 
+# Print results
 print("Top 3 nodes by Degree Centrality:", top_3_degree)
 print("Top 3 nodes by Betweenness Centrality:", top_3_betweenness)
 print("Top 3 nodes by Closeness Centrality:", top_3_closeness)
 
-# Q2C: Visualize network with node sizes based on centrality measures
-# Create a figure with 3 subplots
+# Q2C: Visualize the network with different centrality measures
+# Create figure with 3 subplots
 fig, axes = plt.subplots(1, 3, figsize=(18, 6))
 
-# Get a consistent layout for all three plots
+# Use same layout for all visualizations for easier comparison
 pos = nx.spring_layout(G, seed=42)
 
-# Scale factor to make node sizes visible
-scale_factor = 3000
-
-# Plot 1: Degree Centrality
-node_sizes_degree = [degree_centrality[node] * scale_factor for node in G.nodes()]
+# Visualization 1: Degree Centrality
+# Scale node sizes based on degree centrality (multiply by 3000 for visibility)
+node_sizes_degree = [degree_centrality[node] * 3000 for node in G.nodes()]
 nx.draw(G, pos, node_size=node_sizes_degree, with_labels=True, 
         node_color='lightblue', edge_color='gray', ax=axes[0])
-axes[0].set_title('Network with Node Sizes Based on Degree Centrality', fontsize=12, fontweight='bold')
+axes[0].set_title("Degree Centrality\n(Node size proportional to degree centrality)", fontsize=12)
 
-# Plot 2: Betweenness Centrality
-node_sizes_betweenness = [betweenness_centrality[node] * scale_factor for node in G.nodes()]
-nx.draw(G, pos, node_size=node_sizes_betweenness, with_labels=True, 
+# Visualization 2: Betweenness Centrality
+# Scale node sizes based on betweenness centrality
+# Add a minimum size to make all nodes visible
+node_sizes_betweenness = [max(betweenness_centrality[node] * 3000, 100) for node in G.nodes()]
+nx.draw(G, pos, node_size=node_sizes_betweenness, with_labels=True,
         node_color='lightgreen', edge_color='gray', ax=axes[1])
-axes[1].set_title('Network with Node Sizes Based on Betweenness Centrality', fontsize=12, fontweight='bold')
+axes[1].set_title("Betweenness Centrality\n(Node size proportional to betweenness centrality)", fontsize=12)
 
-# Plot 3: Closeness Centrality
-node_sizes_closeness = [closeness_centrality[node] * scale_factor for node in G.nodes()]
-nx.draw(G, pos, node_size=node_sizes_closeness, with_labels=True, 
+# Visualization 3: Closeness Centrality
+# Scale node sizes based on closeness centrality
+node_sizes_closeness = [closeness_centrality.get(node, 0.01) * 3000 for node in G.nodes()]
+nx.draw(G, pos, node_size=node_sizes_closeness, with_labels=True,
         node_color='lightcoral', edge_color='gray', ax=axes[2])
-axes[2].set_title('Network with Node Sizes Based on Closeness Centrality', fontsize=12, fontweight='bold')
+axes[2].set_title("Closeness Centrality\n(Node size proportional to closeness centrality)", fontsize=12)
 
 plt.tight_layout()
+plt.savefig('HW1/q2c_visualization.png', dpi=300, bbox_inches='tight')
+print("\nVisualization saved as 'HW1/q2c_visualization.png'")
 plt.show()
