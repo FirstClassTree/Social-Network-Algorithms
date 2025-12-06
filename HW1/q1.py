@@ -72,8 +72,8 @@ def watts_strogatz_model(n, k, p):
                     continue
                 possible_targets.append(node)
             
-            # Only recreate if we have valid targets
-            if len(possible_targets) > 0:
+            # Only if we have valid targets
+             if len(possible_targets) > 0:
                 new_target = random.choice(possible_targets)
                 G.remove_edge(i, j)
                 G.add_edge(i, new_target)
@@ -98,12 +98,6 @@ def compute_clustering_coefficient(G):
     --------
     float
         Average clustering coefficient of the graph
-    
-    Examples:
-    ---------
-    >>> G = watts_strogatz_model(20, 4, 0.3)
-    >>> cc = compute_clustering_coefficient(G)
-    >>> print(f"Clustering coefficient: {cc:.4f}")
     """
     clustering_coefficients = []
     
