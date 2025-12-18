@@ -2,6 +2,6 @@
 /shelf/
 /workspace.xml
 *.iml
-*.xml
+*.xmlf
 # Editor-based HTTP Client requests
 /httpRequests/

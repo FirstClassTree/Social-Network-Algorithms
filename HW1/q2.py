@@ -25,6 +25,10 @@ def compute_betweenness_centrality(graph, normalized=True):
     """
     Computes the betweenness centrality for each node in the given graph.
     
+    Betweenness centrality measures how often a node appears on shortest paths
+    between other nodes. When multiple shortest paths exist, the contribution
+    is fractional (divided by the total number of shortest paths).
+    
     Parameters:
     graph (networkx.Graph): The input graph.
     normalized (bool): If True, normalize by dividing by (n-1)(n-2)/2.
@@ -34,22 +38,25 @@ def compute_betweenness_centrality(graph, normalized=True):
     """
     node_betweenness_centrality = {}
     for node in graph.nodes():
-        node_betweenness_centrality[node] = 0
+        node_betweenness_centrality[node] = 0.0
     
-    # Precompute all pairs shortest paths
-    all_shortest_paths = dict(nx.all_pairs_shortest_path(graph))
-    
-    # Count how many times each node appears on shortest paths between other nodes
+    # Compute betweenness considering ALL shortest paths
     for source_node in graph.nodes():
         for target_node in graph.nodes():
             if source_node != target_node:
                 try:
-                    # Get the shortest path from source to target
-                    shortest_path = all_shortest_paths[source_node][target_node]
-                    # Count intermediate nodes (exclude source and target)
-                    for intermediate_node in shortest_path[1:-1]:
-                        node_betweenness_centrality[intermediate_node] += 1
-                except KeyError:
+                    # Get ALL shortest paths from source to target
+                    all_paths = list(nx.all_shortest_paths(graph, source_node, target_node))
+                    num_paths = len(all_paths)
+                    
+                    # Count how many paths each intermediate node appears in
+                    for path in all_paths:
+                        # Count intermediate nodes (exclude source and target)
+                        for intermediate_node in path[1:-1]:
+                            # Add fractional contribution: 1 / total_number_of_shortest_paths
+                            node_betweenness_centrality[intermediate_node] += 1.0 / num_paths
+                            
+                except nx.NetworkXNoPath:
                     # No path exists between source and target
                     pass
     
